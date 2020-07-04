@@ -1,4 +1,5 @@
 import { GoogleSpreadsheet } from 'google-spreadsheet';
+import { fromBase64 } from '../../utils/utils'
 
 const doc = new GoogleSpreadsheet(process.env.SHEET_DOC_ID);
 
@@ -8,7 +9,7 @@ export default async(req, res) => {
     
     await doc.useServiceAccountAuth({
       client_email: process.env.SHEET_CLIENT_EMAIL,
-      private_key: process.env.SHEET_PRIVATE_KEY
+      private_key: fromBase64(process.env.SHEET_PRIVATE_KEY)
     });
 
     await doc.loadInfo();
@@ -26,9 +27,9 @@ export default async(req, res) => {
 
   } catch (error) {
     console.log(error);
-    /*res.end(JSON.stringify({
+    res.end(JSON.stringify({
       showCoupon: false,
       message: ''
-    }));*/
+    }));
   }
 }
